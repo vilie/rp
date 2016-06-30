@@ -1,1 +1,1 @@
-Reqs: python27, python-praw
+Reqs: python27, python-praw, python-mongoengine
