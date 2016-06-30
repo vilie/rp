@@ -1,20 +1,29 @@
+import json
 import praw
 import time
 
-r = praw.Reddit('Comment parser example by u/_Daimon_')
-multi_reddits = r.get_subreddit('gif+pics')
+with open('config.json') as data_file:
+    conf = json.load(data_file)
 
-base = multi_reddits.get_comments(limit=1).next()
+r = praw.Reddit(user_agent='Internet Explorer 3.14')
+reddits = r.get_subreddit("+".join(conf["subreddits"]))
 
-print "Base=", base.fullname
+base_com = reddits.get_comments(limit=1).next()
+base_thr = reddits.get_new(limit=1).next()
+
+print "Base com=", base_com.fullname, "Base thread=", base_thr.fullname
 
 time.sleep(4)
 
-
 while True:
-    mrc = multi_reddits.get_comments(limit=40, params={"before": base.fullname})
-    for com in mrc:
-        print com.fullname, com
-        if com.created_utc > base.created_utc:
-            base = com
+    coms = reddits.get_comments(limit=42, params={"before": base_com.fullname})
+    for com in coms:
+        print "Com ", com.fullname, com
+        if com.created_utc > base_com.created_utc:
+            base_com = com
+    thrs = reddits.get_new(limit=42, params={"before": base_thr.fullname})
+    for thr in thrs:
+        print "Thr", thr.fullname, thr
+        if thr.created_utc > base_thr.created_utc:
+            base_thr = thr
     time.sleep(1)
