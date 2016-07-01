@@ -1,6 +1,7 @@
 import json
 import praw
 import time
+from db import database
 
 with open('config.json') as data_file:
     conf = json.load(data_file)
