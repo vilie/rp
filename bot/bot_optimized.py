@@ -20,11 +20,13 @@ while True:
     coms = reddits.get_comments(limit=42, params={"before": base_com.fullname})
     for com in coms:
         print "Com ", com.subreddit, com.fullname, com.body
+        database.save(com)
         if com.created_utc > base_com.created_utc:
             base_com = com
     thrs = reddits.get_new(limit=42, params={"before": base_thr.fullname})
     for thr in thrs:
         print "Thr", thr.subreddit, thr.fullname, thr.title
+        database.save(thr)
         if thr.created_utc > base_thr.created_utc:
             base_thr = thr
     time.sleep(1)

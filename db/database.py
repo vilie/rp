@@ -9,14 +9,21 @@ db = client.reddit
 
 posts = db.data
 
+class toInsert(object):
+    created_utc=None
+    subreddit=None
+    text=None
+
 def save(obj):
-    toInsert.utc_time = obj.utc_time
+    toInsert.created_utc = obj.created_utc
     toInsert.subreddit = obj.subreddit
-    if type(base_thr) is praw.objects.Submission:
-        toInsert.text = obj.body
-    else:
+    if type(obj) is praw.objects.Submission:
         toInsert.text = obj.title
-    posts.insert(toInsert)
+        print "Saving a thread"
+    else:
+        toInsert.text = obj.body
+        print "Saving a comment"
+    posts.insert_one(toInsert)
 
 # a = posts.find_one({"author": "Hellod"})
 # print a
