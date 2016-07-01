@@ -6,22 +6,19 @@ from pymongo import MongoClient
 
 client = MongoClient()
 db = client.reddit
-
 posts = db.data
 
-class toInsert(object):
-    created_utc=None
-    subreddit=None
-    text=None
+print "AAAAA"
 
 def save(obj):
-    toInsert.created_utc = obj.created_utc
-    toInsert.subreddit = obj.subreddit
+    toInsert = {}
+    toInsert["created_utc"] = obj.created_utc
+    toInsert["subreddit"] = str(obj.subreddit)
     if type(obj) is praw.objects.Submission:
-        toInsert.text = obj.title
+        toInsert["text"] = obj.title
         print "Saving a thread"
     else:
-        toInsert.text = obj.body
+        toInsert["text"] = obj.body
         print "Saving a comment"
     posts.insert_one(toInsert)
 
