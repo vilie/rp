@@ -22,5 +22,5 @@ def save(obj):
         print "Saving a comment"
     posts.insert_one(toInsert)
 
-# a = posts.find_one({"author": "Hellod"})
-# print a
+def get(obj):
+    return posts.find({ "subreddit": "gifs" } )
