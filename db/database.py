@@ -23,4 +23,10 @@ def save(obj):
     posts.insert_one(toInsert)
 
 def get(obj):
-    return posts.find({ "subreddit": "gifs" } )
+    subreddit = obj["subreddit"]
+    from_time = int(obj["from_time"])
+    to_time = int(obj["to_time"])
+    keyword = obj["keyword"]  
+    
+    return posts.find({"subreddit": subreddit,
+                       "created_utc": {"$gte": from_time, "$lte": to_time}})
