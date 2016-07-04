@@ -1,27 +1,32 @@
 import json
 import praw
 import time
-
-from pprint import pprint
+from db import database
 
 with open('config.json') as data_file:
     conf = json.load(data_file)
 
 r = praw.Reddit(user_agent='Internet Explorer 3.14')
+reddits = r.get_subreddit("+".join(conf["subreddits"]))
 
-sleepTime = 5
-postID = {}
-print "Finding latest post in each sub"
+base_com = reddits.get_comments(limit=1).next()
+base_thr = reddits.get_new(limit=1).next()
 
-for sub in conf["subreddits"]:
-    postID[sub] = r.get_subreddit(sub).get_new(limit=1).next().fullname
-    print sub, postID[sub]
+print "Base com=", base_com.fullname, "Base thread=", base_thr.fullname
+
+time.sleep(4)
 
 while True:
-    for subs in conf["subreddits"]:
-        topics = r.get_subreddit(subs).get_new(limit=50, params={"before": postID[subs]})
-        for topic_it in topics:
-            print 'Sub', subs, 'Topic ', topic_it.id, topic_it.title[:15]
-            for comments in praw.helpers.flatten_tree(topic_it.comments):
-                print 'Sub', subs, 'Comment ', comments.id, str(comments)[:15]
-    time.sleep(sleepTime)
+    coms = reddits.get_comments(limit=42, params={"before": base_com.fullname})
+    for com in coms:
+        print "Com ", com.subreddit, com.fullname, com.body
+        database.save(com)
+        if com.created_utc > base_com.created_utc:
+            base_com = com
+    thrs = reddits.get_new(limit=42, params={"before": base_thr.fullname})
+    for thr in thrs:
+        print "Thr", thr.subreddit, thr.fullname, thr.title
+        database.save(thr)
+        if thr.created_utc > base_thr.created_utc:
+            base_thr = thr
+    time.sleep(1)

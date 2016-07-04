@@ -11,7 +11,7 @@ posts.create_index([("text", pymongo.TEXT),
                     ("subreddit", pymongo.ASCENDING),
                     ("created_utc", pymongo.DESCENDING)]);
 
-print "AAAAA"
+print "Configuring database"
 
 def save(obj):
     toInsert = {}
