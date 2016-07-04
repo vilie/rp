@@ -12,6 +12,7 @@ print "AAAAA"
 
 def save(obj):
     toInsert = {}
+    toInsert["id"] = obj.id
     toInsert["created_utc"] = obj.created_utc
     toInsert["subreddit"] = str(obj.subreddit)
     if type(obj) is praw.objects.Submission:
