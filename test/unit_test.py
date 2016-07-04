@@ -27,6 +27,10 @@ class TestStringMethods(unittest.TestCase):
                                           "?subreddit=f&from=2&to=a").read())
         self.assertEqual(resp["error"], "Operation failed");
         pass
-
+    def test_noErrorOnParams(self):
+        resp = urllib2.urlopen(webserver + "?subreddit=f&from=0&to=16")
+        self.assertEqual(resp.getcode(), 200)
+        pass
+        
 if __name__ == '__main__':
     unittest.main()
