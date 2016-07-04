@@ -17,7 +17,9 @@ def hello():
     params["to_time"] = request.args.get('to')
 
     if params["subreddit"] is None or params["from_time"] is None or params["to_time"] is None:
-        return "{\"error\": Not all params set}"
+        return "{\"error\": \"Operation failed\"}"
+    if not ( params["from_time"].isdigit() and params["to_time"].isdigit() ):
+        return "{\"error\": \"Operation failed\"}"
 
     params["keyword"] = request.args.get('keyword')
     res = database.get(params)
