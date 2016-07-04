@@ -7,6 +7,9 @@ from pymongo import MongoClient
 client = MongoClient()
 db = client.reddit
 posts = db.data
+posts.create_index([("text", pymongo.TEXT),
+                    ("subreddit", pymongo.ASCENDING),
+                    ("created_utc", pymongo.DESCENDING)]);
 
 print "AAAAA"
 
@@ -27,7 +30,11 @@ def get(obj):
     subreddit = obj["subreddit"]
     from_time = int(obj["from_time"])
     to_time = int(obj["to_time"])
-    keyword = obj["keyword"]  
-    
-    return posts.find({"subreddit": subreddit,
-                       "created_utc": {"$gte": from_time, "$lte": to_time}})
+    keyword = obj["keyword"]
+    query =  {"subreddit": subreddit,
+                       "created_utc": {"$gte": from_time, "$lte": to_time}};
+
+    if not keyword is None:
+        query["$text"] = {"$search": keyword}
+
+    return posts.find(query)

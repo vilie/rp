@@ -3,3 +3,7 @@ Reqs: python27, python-praw, python-mongoengine
 OR
 
 pip install -U pymongo flask
+
+Tested on:
+* python 2.7
+* mongo 2.6 (We need "setParameter=textSearchEnabled=true" on 2.4)
