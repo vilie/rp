@@ -1,3 +1,7 @@
+bot:
+    build: bot
+    links:
+        - mongo
 webserv:
     build: webserv
     ports:
