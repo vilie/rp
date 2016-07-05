@@ -7,3 +7,9 @@ pip install -U pymongo flask
 Tested on:
 * python 2.7
 * mongo 2.6 (We need "setParameter=textSearchEnabled=true" on 2.4)
+
+Testing with docker:
+
+cd docker
+./runme.sh
+docker-compose up
