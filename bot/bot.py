@@ -3,7 +3,7 @@ import praw
 import time
 from db import database
 
-with open('config.json') as data_file:
+with open('/usr/share/bot/config.json') as data_file:
     conf = json.load(data_file)
 
 r = praw.Reddit(user_agent='Internet Explorer 3.14')
