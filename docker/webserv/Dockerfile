@@ -1,6 +1,9 @@
 FROM python:2.7.11
 
-RUN pip install -U flask pymongo
+RUN pip install -U flask pymongo praw
 
-ENV PYTHONPATH=/usr/bin
-CMD python hello world
+ENV PYTHONPATH=/usr/share/
+COPY web /usr/share/web
+COPY db /usr/share/db
+#CMD ping romantic_lalande
+CMD python /usr/share/web/web.py
