@@ -4,7 +4,7 @@ import praw
 
 from pymongo import MongoClient
 
-client = MongoClient()
+client = MongoClient("mongo")
 db = client.reddit
 posts = db.data
 posts.create_index([("text", pymongo.TEXT),
