@@ -5,5 +5,4 @@ RUN pip install -U flask pymongo praw
 ENV PYTHONPATH=/usr/share/
 COPY web /usr/share/web
 COPY db /usr/share/db
-#CMD ping romantic_lalande
 CMD python /usr/share/web/web.py
